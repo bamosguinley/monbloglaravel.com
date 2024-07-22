@@ -7,11 +7,8 @@ Articles
 <h2>Mes articles</h2>
 
 @forelse ($articles as $article)
-    <article>
-        <h2>{{$article['title']}}</h2>
-        <p>{{$article['body']}}</p>
-    </article>
+   @include('layouts.articles.index')
 @empty
-<p>Oups 😫! Aucun article trouvé</p>
+    @include('layouts.articles.no-article')
 @endforelse
 @endsection
