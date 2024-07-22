@@ -8,8 +8,25 @@
 </head>
 
 <body class="antialiased">
-    <h1>Mon blog laravel</h1>
-    <p><a href="/contact-us">Contactez-nous</a></p>
+    <header>
+        <h1>Mon blog laravel</h1>
+        <nav>
+            <ul>
+                <li>
+                    <a href="/">Home</a>
+                </li>
+              
+                <li>
+                    <a href="/about">About</a>
+                 </li>
+                <li>
+                    <a href="/contact-us">Contact us</a>
+                </li>
+                <!-- <li><a href=""></a></li>
+                <li><a href=""></a></li> -->
+            </ul>
+        </nav>
+    </header>
     <!-- Le contenu de toutes les pages ici -->
     @yield('content')
     <!-- Le contenu de toutes les pages ici -->
