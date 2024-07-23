@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\storeArticleRequest;
 use App\Models\Article;
 use Illuminate\Http\Request;
 
@@ -12,21 +13,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = [
-           [
-                "title" => "Titre article 1",
-                "body"=>"le contenu de l'article"
-           ],
-           [
-                "title" => "Titre article 2",
-                "body"=>"le contenu de l'article"
-           ],
-           [
-                "title" => "Titre article 3",
-                "body"=>"le contenu de l'article"
-           ],
-        ];
-        return view("layouts.articles",compact("articles"));
+        $articles = Article::all();
+        return view("layouts.articles", compact("articles"));
     }
 
     /**
@@ -34,23 +22,37 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        return view('articles.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(storeArticleRequest $request)
     {
-        //
+        // dd($request->all());
+        $validated = $request->validated();
+        //Gérer la sauvegarde de l'image
+        if($request ->hasFile('image')){
+            $path= $request
+             -> file('image')
+            ->store('images');
+            $validated['image'] = $path;
+        }
+        //envoyer l'article dans la bdd
+        Article::create($validated);
+        //redirection sur la page des articles
+        return redirect('/articles')->with('sucess', 'Article créé avec succès');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
+    public function show($id)
     {
-        //
+        $article = Article::with('comments')->find($id);
+
+        return view("articles.show", ["article" => $article]);
     }
 
     /**
