@@ -14,7 +14,7 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::all();
-        return view("layouts.articles",compact("articles"));
+        return view("layouts.articles", compact("articles"));
     }
 
     /**
@@ -31,18 +31,28 @@ class ArticleController extends Controller
     public function store(storeArticleRequest $request)
     {
         // dd($request->all());
-        $validated= $request->validated();
-        Article::create($request->all());
-        return redirect('/articles');
+        $validated = $request->validated();
+        //Gérer la sauvegarde de l'image
+        if($request ->hasFile('image')){
+            $path= $request
+             -> file('image')
+            ->store('images');
+            $validated['image'] = $path;
+        }
+        //envoyer l'article dans la bdd
+        Article::create($validated);
+        //redirection sur la page des articles
+        return redirect('/articles')->with('sucess', 'Article créé avec succès');
     }
 
     /**
      * Display the specified resource.
      */
     public function show($id)
-    {   $article=Article::with('comments')->find($id);
-    
-        return view("articles.show",["article"=>$article]);
+    {
+        $article = Article::with('comments')->find($id);
+
+        return view("articles.show", ["article" => $article]);
     }
 
     /**
