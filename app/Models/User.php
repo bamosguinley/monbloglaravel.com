@@ -45,4 +45,8 @@ class User extends Authenticatable
     public function articles(){
         return $this->hasMany(Article::class);
     }
+    //un utilisateur peut avoir plusieurs commemntaires
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
 }

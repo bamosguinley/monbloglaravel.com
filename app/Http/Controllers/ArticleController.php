@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\storeArticleRequest;
 use App\Models\Article;
 use Illuminate\Http\Request;
 
@@ -21,22 +22,26 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        return view('articles.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(storeArticleRequest $request)
     {
-        //
+        // dd($request->all());
+        $validated= $request->validated();
+        Article::create($request->all());
+        return redirect('/articles');
     }
 
     /**
      * Display the specified resource.
      */
     public function show($id)
-    {   $article=Article::where("id",$id)->with('comments')->first();
+    {   $article=Article::with('comments')->find($id);
+    
         return view("articles.show",["article"=>$article]);
     }
 

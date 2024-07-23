@@ -17,6 +17,7 @@ class Comment extends Model
     public function article(){
         return $this->belongsTo(Article::class);
     }
+    //un commemntaire est relatif a un utilisateur
     public function user()
     {
         return $this->belongsTo(User::class);
