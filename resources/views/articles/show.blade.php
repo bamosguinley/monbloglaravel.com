@@ -12,4 +12,31 @@
         </div>
     </div>
 </article>
+<section class="">
+    <h2>
+        <label for="comment-input">
+            Commentaires
+        </label>
+    </h2>
+    <form action="">
+        <div class="form-floating">
+            <textarea name="comment" id="comment-input" 
+            class="form-control" 
+            placeholder="Laissez votre commentaire ici"
+            row-5 
+            text-dark></textarea>
+            <button type="submit" class="btn btn-primary mt-4 mb-4">Envoyer</button>
+    </form>
+    <div>
+        @forelse($article->comments as $comment)
+            <div class="col-md-6 mb-2">
+                <p class="text-primary">User {{$comment->user_id}}</p>
+                <small class="">{{$comment['comment']}}</small>
+            </div>
+        @empty
+            <p>Aucun commentaire trouvé</p>    
+        @endforelse
+    </div>
+    </div>
+</section>
 @endsection
