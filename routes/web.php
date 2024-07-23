@@ -14,4 +14,5 @@ Route::controller(PagesController::class)
 Route::controller(ArticleController::class)
     ->group(function () { 
         Route::get('/articles', 'index');
+        Route::get('/article/{article}', 'show');
     });
