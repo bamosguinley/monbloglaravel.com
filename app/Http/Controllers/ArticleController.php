@@ -36,10 +36,10 @@ class ArticleController extends Controller
         // dd($request->all());
         $validated = $request->validated();
         //Gérer la sauvegarde de l'image
-        if($request ->hasFile('image')){
-            $path= $request
-             -> file('image')
-            ->store('images','public');
+        if ($request->hasFile('image')) {
+            $path = $request
+                ->file('image')
+                ->store('images', 'public');
             $validated['image'] = $path;
             $validated['user_id'] = 1;
         }
@@ -64,7 +64,7 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        return view("articles.edit", ["article"=> $article]);
+        return view("articles.edit", ["article" => $article]);
     }
 
     /**
@@ -75,22 +75,22 @@ class ArticleController extends Controller
         $validated = $request->validated();
 
         //Gestion de l'image
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             //Supprimer l'ancienne image 
-            if($article->image){
+            if ($article->image) {
                 Storage::disk('public')->delete($article->image);
             }
             //stocker la nouvelle 
-            $path=$request->file('image')->store('images','public');
+            $path = $request->file('image')->store('images', 'public');
             $validated['image'] = $path;
-        }else{
+        } else {
             //garder l'ancienne image si aucune autre image n'est téléchargée
             $validated['image'] = $article->image;
         }
         //Mettre à jour l'article
         $article->update($validated);
         //Rediriger vers la page des articles avec un message success
-        return redirect()->route("articles.show",$article->id)->with("success","article mis à jour avec succès");
+        return redirect()->route("articles.show", $article->id)->with("success", "article mis à jour avec succès");
     }
 
     /**
@@ -98,6 +98,10 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        if ($article->image) {
+            Storage::disk("public")->delete($article->image);
+        }
+        $article->delete();
+        return redirect()->route("articles.index")->with("success", "Article supprimé avec succès");
     }
 }

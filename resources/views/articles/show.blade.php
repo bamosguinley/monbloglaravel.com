@@ -9,6 +9,11 @@
         <div class="card-body">
             <h5 class="card-title">{{$article['title']}}
                 <a href="/articles/{{$article->id}}/edit" class="btn btn-sm btn-warning ml-3">Modifier</a>
+                <form action="{{route('articles.destroy',$article->id)}}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger">Supprimer</button>
+                </form>
             </h5>
             <p class="mt-2">Créé par {{$article->user->name}} <span>{{$article->created_at->diffForHumans()}}</span></p>
             <p class="card-text">{{$article['body']}}</p>
