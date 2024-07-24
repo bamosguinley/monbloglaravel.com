@@ -13,7 +13,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::all();
+        // $articles = Article::orderByDesc("created_at")->paginate(10);
+        $articles = Article::latest()->paginate(5);
         return view("layouts.articles", compact("articles"));
     }
 
@@ -36,13 +37,14 @@ class ArticleController extends Controller
         if($request ->hasFile('image')){
             $path= $request
              -> file('image')
-            ->store('images');
+            ->store('images','public');
             $validated['image'] = $path;
+            $validated['user_id'] = 1;
         }
         //envoyer l'article dans la bdd
         Article::create($validated);
         //redirection sur la page des articles
-        return redirect('/articles')->with('sucess', 'Article créé avec succès');
+        return redirect('/articles')->with('success', 'Article créé avec succès');
     }
 
     /**
@@ -60,7 +62,7 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        //
+        return view("articles.edit", ["article"=> $article]);
     }
 
     /**
@@ -68,7 +70,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        //
+        dd($article, $request->all());
     }
 
     /**

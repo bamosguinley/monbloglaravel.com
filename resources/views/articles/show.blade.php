@@ -5,9 +5,11 @@
 @section('content')
 <article>
     <div class="">
-        <img src="{{$article['image']}}" class="card-img-top" alt="..." style="height: 500px;">
+        <img src="{{asset('storage/' . $article->image)}}" class="card-img-top" alt="..." style="height: 500px;">
         <div class="card-body">
-            <h5 class="card-title">{{$article['title']}}</h5>
+            <h5 class="card-title">{{$article['title']}}
+                <a href="/articles/{{$article->id}}/edit" class="btn btn-sm btn-warning ml-3">Modifier</a>
+            </h5>
             <p class="mt-2">Créé par {{$article->user->name}} <span>{{$article->created_at->diffForHumans()}}</span></p>
             <p class="card-text">{{$article['body']}}</p>
         </div>
