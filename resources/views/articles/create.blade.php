@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-<form enctype="multipart/form-data" method="post" action="/articles">
+<form enctype="multipart/form-data" method="post" action="{{route('articles.store')}}">
     @if ($errors->any())
         <div class="alert alert-danger">
             @foreach ($errors->all() as $error)

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\storeArticleRequest;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\storeArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
 
 class ArticleController extends Controller
 {
@@ -44,7 +46,7 @@ class ArticleController extends Controller
         //envoyer l'article dans la bdd
         Article::create($validated);
         //redirection sur la page des articles
-        return redirect('/articles')->with('success', 'Article créé avec succès');
+        return redirect()->route('articles.index')->with('success', 'Article créé avec succès');
     }
 
     /**
@@ -68,9 +70,27 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Article $article)
-    {
-        dd($article, $request->all());
+    public function update(UpdateArticleRequest $request, Article $article)
+    {   //Les donnés validés sont déjà disponible via le update article request
+        $validated = $request->validated();
+
+        //Gestion de l'image
+        if($request->hasFile('image')){
+            //Supprimer l'ancienne image 
+            if($article->image){
+                Storage::disk('public')->delete($article->image);
+            }
+            //stocker la nouvelle 
+            $path=$request->file('image')->store('images','public');
+            $validated['image'] = $path;
+        }else{
+            //garder l'ancienne image si aucune autre image n'est téléchargée
+            $validated['image'] = $article->image;
+        }
+        //Mettre à jour l'article
+        $article->update($validated);
+        //Rediriger vers la page des articles avec un message success
+        return redirect()->route("articles.show",$article->id)->with("success","article mis à jour avec succès");
     }
 
     /**

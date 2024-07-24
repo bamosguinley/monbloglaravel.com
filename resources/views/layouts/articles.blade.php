@@ -5,11 +5,7 @@ Articles
 @endsection
 @section('content')
 <h2>Mes articles</h2>
-@if (session('success'))
-    <div class="alert alert-success">
-        {{session('success')}}
-    </div>
-@endif
+
 <a href="/articles/create" class="btn btn-primary mt-2 mb-2">Créer</a>
 @forelse ($articles as $article)
     @include('articles.partials.index')

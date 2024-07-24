@@ -18,6 +18,11 @@
     </header>
     <!-- Le contenu de toutes les pages ici -->
     <main class="container mt-4">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{session('success')}}
+            </div>
+        @endif
         @yield('content')
     </main>
     <!-- Le contenu de toutes les pages ici -->

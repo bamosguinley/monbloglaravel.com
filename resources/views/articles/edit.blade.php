@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-<form enctype="multipart/form-data" method="post" action="/articles">
+<form enctype="multipart/form-data" method="post" action="{{route('articles.update',$article->id)}}">
     @method('patch')
     @if ($errors->any())
         <div class="alert alert-danger">
